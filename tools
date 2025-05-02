@@ -1,0 +1,144 @@
+#!/bin/bash
+
+# ألوان ANSI
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # بدون لون
+
+# واجهة الدخول
+clear
+echo -e "${RED}███████╗██╗███╗   ██╗ ██████╗ ██╗   ██╗${NC}"
+echo -e "${RED}██╔════╝██║████╗  ██║██╔════╝ ██║   ██║${NC}"
+echo -e "${RED}█████╗  ██║██╔██╗ ██║██║  ███╗██║   ██║${NC}"
+echo -e "${RED}██╔══╝  ██║██║╚██╗██║██║   ██║██║   ██║${NC}"
+echo -e "${RED}██║     ██║██║ ╚████║╚██████╔╝╚██████╔╝${NC}"
+echo -e "${RED}╚═╝     ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ${NC}"
+echo -e "${YELLOW}         By ZINOU | Termux Edition${NC}"
+echo -e "${CYAN}-------------------------------------------${NC}"
+echo
+read -p "Enter your name: " user
+clear
+echo -e "${GREEN}Welcome $user, loading tools...${NC}"
+sleep 2
+
+# فحص وتثبيت الأدوات
+function check_and_run() {
+  tool=$1
+  if ! command -v $tool &> /dev/null; then
+    echo -e "${YELLOW}$tool not installed. Installing...${NC}"
+    pkg install -y $tool
+  fi
+  echo -e "${GREEN}Running $tool...${NC}"
+  $tool
+}
+
+while true; do
+  clear
+  echo -e "${CYAN}=========== Tool Categories ===========${NC}"
+  echo -e "${YELLOW}[1]${NC} Network Hacking Tools"
+  echo -e "${YELLOW}[2]${NC} Security Testing Tools"
+  echo -e "${YELLOW}[3]${NC} Password Cracking Tools"
+  echo -e "${YELLOW}[4]${NC} DDoS Tools"
+  echo -e "${YELLOW}[5]${NC} Exit"
+  echo -e "${CYAN}=======================================${NC}"
+  read -p "Select a category: " opt
+
+  case $opt in
+    1)
+      # أدوات اختراق الشبكات
+      clear
+      echo -e "${CYAN}====== Network Hacking Tools ======${NC}"
+      echo -e "${YELLOW}[1]${NC} aircrack-ng"
+      echo -e "${YELLOW}[2]${NC} ettercap"
+      echo -e "${YELLOW}[3]${NC} wireshark"
+      echo -e "${YELLOW}[4]${NC} bettercap"
+      echo -e "${YELLOW}[5]${NC} Back"
+      read -p "Choose a tool: " net_tool
+      case $net_tool in
+        1) check_and_run aircrack-ng;;
+        2) check_and_run ettercap;;
+        3) check_and_run wireshark;;
+        4) check_and_run bettercap;;
+        5) continue;;
+        *) echo "Invalid option"; sleep 1;;
+      esac
+      ;;
+    2)
+      # أدوات فحص واختبار الأمان
+      clear
+      echo -e "${CYAN}====== Security Testing Tools ======${NC}"
+      echo -e "${YELLOW}[1]${NC} burpsuite"
+      echo -e "${YELLOW}[2]${NC} zap"
+      echo -e "${YELLOW}[3]${NC} nikto"
+      echo -e "${YELLOW}[4]${NC} dirb"
+      echo -e "${YELLOW}[5]${NC} Back"
+      read -p "Choose a tool: " sec_tool
+      case $sec_tool in
+        1) check_and_run burpsuite;;
+        2) check_and_run zap;;
+        3) check_and_run nikto;;
+        4) check_and_run dirb;;
+        5) continue;;
+        *) echo "Invalid option"; sleep 1;;
+      esac
+      ;;
+    3)
+      # أدوات تحليل كلمات المرور
+      clear
+      echo -e "${CYAN}====== Password Cracking Tools ======${NC}"
+      echo -e "${YELLOW}[1]${NC} john"
+      echo -e "${YELLOW}[2]${NC} hashcat"
+      echo -e "${YELLOW}[3]${NC} medusa"
+      echo -e "${YELLOW}[4]${NC} Back"
+      read -p "Choose a tool: " pass_tool
+      case $pass_tool in
+        1) check_and_run john;;
+        2) check_and_run hashcat;;
+        3) check_and_run medusa;;
+        4) continue;;
+        *) echo "Invalid option"; sleep 1;;
+      esac
+      ;;
+    4)
+      # أدوات DDoS (بما في ذلك Holk)
+      clear
+      echo -e "${CYAN}====== DDoS Tools ======${NC}"
+      echo -e "${YELLOW}[1]${NC} Slowloris"
+      echo -e "${YELLOW}[2]${NC} GoldenEye"
+      echo -e "${YELLOW}[3]${NC} Xerxes"
+      echo -e "${YELLOW}[4]${NC} UFONet"
+      echo -e "${YELLOW}[5]${NC} Holk (HOIC)"
+      echo -e "${YELLOW}[6]${NC} Back"
+      read -p "Choose a DDoS tool: " ddos_tool
+      case $ddos_tool in
+        1) check_and_run slowloris;;
+        2) check_and_run goldeneye;;
+        3) check_and_run xerxes;;
+        4) check_and_run ufonet;;
+        5)
+          # تثبيت وتشغيل Holk (HOIC)
+          if ! command -v python3 &> /dev/null; then
+            echo -e "${YELLOW}Python3 is not installed. Installing...${NC}"
+            pkg install -y python
+          fi
+          echo -e "${YELLOW}Downloading HOIC (Holk)...${NC}"
+          git clone https://github.com/hoic/HOIC.git
+          cd HOIC
+          python3 HOIC.py
+          ;;
+        6) continue;;
+        *) echo "Invalid option"; sleep 1;;
+      esac
+      ;;
+    5)
+      echo -e "${RED}Exiting...${NC}"
+      break
+      ;;
+    *)
+      echo -e "${RED}Invalid selection!${NC}"
+      sleep 1
+      ;;
+  esac
+done
